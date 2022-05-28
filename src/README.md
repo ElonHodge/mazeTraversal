@@ -1,3 +1,3 @@
 # mazeTraversal
 
-####Java program used to solve a maze 
+Java program used to solve a maze  test
