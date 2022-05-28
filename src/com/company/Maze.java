@@ -9,7 +9,10 @@ public class Maze {
     int lastY;
     int xFinish;
     int yFinish;
+    char start;
+    char finish;
     boolean viewMoves = false;
+
 
     public Maze(char[][] maze, int xStart, int yStart, int xFinish, int yFinish) {
         this.maze = maze;
@@ -19,6 +22,24 @@ public class Maze {
         this.yFinish = yFinish;
     }
 
+
+
+
+    public Maze(char[][] maze, char start, char finish) {
+        this.maze = maze;
+        this.start = start;
+        for (int i = 0; i < maze.length; i++) {
+            for (int j = 0; j < maze.length; j++) {
+                if (maze[i][j] == start)setXY(i,j);
+                if (maze[i][j] == finish) {
+                    setXfinish(i);
+                    setYfinish(j);
+                }
+
+            }
+        }
+        this.finish = finish;
+    }
 
 
     public void viewMoves(boolean viewMoves) {
@@ -59,6 +80,13 @@ public class Maze {
     public void  setXY(int x, int y){
         setX(x);
         setY(y);
+    }
+    public void setXfinish(int xFinish) {
+        this.xFinish = xFinish;
+    }
+
+    public void setYfinish(int yFinish) {
+        this.yFinish = yFinish;
     }
 
     public void print() {
@@ -180,12 +208,12 @@ public class Maze {
     }
 
     public boolean available(int x, int y, char c) {
-        return maze[x][y] == c;
+        return maze[x][y] == c || maze[x][y] == finish;
     }
 
     public void runMaze() {
 
-            while (!done() && movement('.', getX(), getY()) > 0) {
+            while (done() && movement('.', getX(), getY()) > 0) {
                 if (movement('.', getX(), getY()) > 1) {
                     lastY = getY();
                     lastX = getX();
@@ -193,9 +221,7 @@ public class Maze {
 
                 search('.', 'x', getX(), getY());
                 print();
-
-                while (!done() && movement('.',  getX(), getY()) == 0 ) {
-
+                while (done() && movement('.',  getX(), getY()) == 0 ) {
                     backTrack('x', getX(), getY());
                     if (!search('.', 'x', getX(), getY())) {
                         if (movement('x', getX(), getY()) > 0) {
@@ -230,21 +256,21 @@ public class Maze {
 
     }
 
-
     public boolean done() {
 
         if (maze[getX()][getY()] == maze[getxFinish()][getyFinish()]) {
+            maze[getxFinish()][getyFinish()]= finish;
             clearDeadEnds();
-            return true;
+            return false;
         }
 
         for (char[] chars : maze) {
             for (int j = 0; j < maze.length; j++) {
-                if (chars[j] == '.') return false;
+                if (chars[j] == '.') return true;
             }
         }
 
-        return  true;
+        return false;
     }
 
 
