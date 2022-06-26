@@ -8,3 +8,6 @@ Java program used to solve a maze
 - Will solve maze with optimal route
 - Opinion to show every move 
 
+## To come 
+
+- Maze creation method 
